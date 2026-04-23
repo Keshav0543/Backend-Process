@@ -11,6 +11,22 @@ app.get("/info",async (req,res)=>{
     res.send(data);
 })
 
+app.post("/info",async (req,res)=>{
+    const user=new User(req.body);
+    await user.save();
+    res.send("Data Saved...");
+})
+
+
+app.delete("/info/:name",async (req,res)=>{
+    await User.deleteOne({name:req.params.name});
+    res.send("User Deleted Successfully...");
+})
+
+app.put("/info", async (req,res)=>{
+    await User.updateOne({name:req.body.name},{age:req.body.age});
+    res.send("Data is updated...");
+})
 
 main().then(async ()=>{
     console.log("Connected to Database");
