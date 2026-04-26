@@ -1,0 +1,23 @@
+{
+  "name": "backend-process",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Keshav0543/Backend-Process#readme",
+  "bugs": {
+    "url": "https://github.com/Keshav0543/Backend-Process/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Keshav0543/Backend-Process.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0"
+  }
+}
