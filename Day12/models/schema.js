@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 const {Schema}=mongoose;
 
 const userdata= new Schema({
@@ -38,6 +39,12 @@ const userdata= new Schema({
         type:String
     }
 }, {timestamps:true})
+
+userdata.methods.getJWT= function(){
+   const token =jwt.sign({_id:this._id , email:this.email},process.env.SECRET_KEY);
+   return token;
+}
+
 
 const User=mongoose.model("user",userdata);
 
