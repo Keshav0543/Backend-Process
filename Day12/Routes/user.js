@@ -1,6 +1,8 @@
 import express from "express";
 import User from "../models/schema.js";
 import bcrypt from "bcrypt";
+import ValidInput from "../utils/validator.js";
+import jwt from "jsonwebtoken";
 const authRouter=express.Router();
 
 
@@ -36,6 +38,22 @@ authRouter.post("/login", async (req, res) => {
     res.send("Login Successfully...");
   } catch (err) {
     res.status(403).send(err.message);
+  }
+});
+
+
+authRouter.post("/logout",async (req,res)=>{
+  try{
+  //Verify token 
+  const {token}=req.cookies;
+  if(!token) throw new Error("Token Dosen't Exist");
+
+  const payload=jwt.verify(token,process.env.SECRET_KEY);
+  res.cookie("token",null,{expires:new Date(Date.now())});
+  res.send("Logout successfully!!!");
+  }
+  catch(err){
+    res.send(err.message);
   }
 });
 
