@@ -3,7 +3,8 @@ import User from "../models/schema.js";
 import bcrypt from "bcrypt";
 import ValidInput from "../utils/validator.js";
 import jwt from "jsonwebtoken";
-const authRouter=express.Router();
+import client from "../config/redis.js";
+const authRouter=express.Router(); 
 
 
 authRouter.post("/register", async (req, res) => {
@@ -47,8 +48,12 @@ authRouter.post("/logout",async (req,res)=>{
   //Verify token 
   const {token}=req.cookies;
   if(!token) throw new Error("Token Dosen't Exist");
+  const payload= jwt.verify(token,process.env.SECRET_KEY);
+  console.log(payload);
 
-  const payload=jwt.verify(token,process.env.SECRET_KEY);
+  await client.set(`token:${token}`,"Blocked");
+  await client.expireAt(`token:${token}`,payload.exp);
+
   res.cookie("token",null,{expires:new Date(Date.now())});
   res.send("Logout successfully!!!");
   }

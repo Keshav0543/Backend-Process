@@ -41,7 +41,7 @@ const userdata= new Schema({
 }, {timestamps:true})
 
 userdata.methods.getJWT= function(){
-   const token =jwt.sign({_id:this._id , email:this.email},process.env.SECRET_KEY);
+   const token =jwt.sign({_id:this._id , email:this.email},process.env.SECRET_KEY ,{expiresIn:"1h"});
    return token;
 }
 
