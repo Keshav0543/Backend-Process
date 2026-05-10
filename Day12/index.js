@@ -12,10 +12,13 @@ import userAuth from "./middleware/userAuth.js";
 import authRouter from "./Routes/user.js"; 
 import userRouter from "./Routes/auth.js";
 import client from "./config/redis.js";
+import rateLimiter from "./middleware/rateLimiter.js";
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+
+app.use(rateLimiter);
 
 app.use("/auth",authRouter);
 app.use("/user",userRouter);
@@ -33,10 +36,8 @@ const InitializeConnection=async ()=>{
     });
 
   }catch(err){
-    crossOriginIsolated.log(err.message);
+    console.log(err.message);
   }
 }
 
 InitializeConnection();
-
-
