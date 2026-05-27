@@ -1,7 +1,7 @@
-import mongoose from mongoose;
+import mongoose from "mongoose";
 
 async function main(){
-   await mongoose.connect(process.env.DB_CONNECT_STRING)
+   await mongoose.connect(process.env.DB_CONNECT_KEY)
 }
 
 export default main;
