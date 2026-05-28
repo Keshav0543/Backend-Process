@@ -11,9 +11,10 @@ const register= async (req,res)=>{
         validate(req.body);
         const {firstName,emailId,password}=req.body;
         req.body.password=await bcrypt.hash(password,10);
+        req.body.role="user";
 
         const user=await User.create(req.body);
-        const token=jwt.sign({_id:user._id,emailId:user.emailId},process.env.SECRET_KEY,{expiresIn:60*60});
+        const token=jwt.sign({_id:user._id,emailId:user.emailId,role:'user'},process.env.SECRET_KEY,{expiresIn:60*60});
         res.cookie("token",token,{maxAge:60*60*1000});
         res.status(201).send("user Registered Sucessfully...");
     }
@@ -33,7 +34,7 @@ const login= async (req,res)=>{
         const match= bcrypt.compare(password,user.password);
         if(!match)throw new Error("Invalid credentials");
 
-        const token=jwt.sign({_id:user._id,emailId:user.emailId},process.env.SECRET_KEY,{expiresIn:60*60});
+        const token=jwt.sign({_id:user._id,emailId:user.emailId,role:user.role},process.env.SECRET_KEY,{expiresIn:60*60});
         res.cookie("token",token,{maxAge:60*60*1000});
 
         res.status(200).send("LoggedIN Successfull...");
@@ -52,7 +53,6 @@ const getProfile= async (req,res)=>{
     }
 }
 
-
 const logout= async (req,res)=>{
     try{
 
@@ -68,4 +68,23 @@ const logout= async (req,res)=>{
         res.status(400).send("Error: "+err.message);
     }
 }
-export default {register,login,getProfile,logout}; 
+
+const admin=async (req,res)=>{
+    try{
+        //Validate the data
+        validate(req.body);
+        const {firstName,emailId,password}=req.body;
+        req.body.password=await bcrypt.hash(password,10);
+
+        const user=await User.create(req.body);
+        const token=jwt.sign({_id:user._id,emailId:user.emailId,role:user.role},process.env.SECRET_KEY,{expiresIn:60*60});
+        res.cookie("token",token,{maxAge:60*60*1000});
+        res.status(201).send("user Registered Sucessfully...");
+    }
+    catch(err){
+        res.status(400).send("Error: "+err.message);
+    }
+}
+
+
+export default {register,login,getProfile,logout,admin}; 
