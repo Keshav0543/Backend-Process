@@ -19,7 +19,7 @@ const problemSchema=new Schema({
         required:true
     },
 
-    tage:{
+    tags:{
         type:String,
         enum:['array','linked-list','graph','dp'],
         required:true
@@ -57,6 +57,20 @@ const problemSchema=new Schema({
     ],
 
     startCode:[
+        {
+            language:{
+                type:String,
+                required:true
+            },
+
+            initialCode:{
+                type:String,
+                required:true
+            }
+        }
+    ],
+
+    referenceSolution:[
         {
             language:{
                 type:String,

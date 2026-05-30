@@ -5,6 +5,7 @@ import main from "./config/db.js";
 import cookieparser from "cookie-parser";
 import authRouter from "./Routes/userauthen.js";
 import client from "./config/redis.js";
+import problemRouter from "./Routes/problemCreator.js";
 
 const app=express();
 
@@ -12,6 +13,7 @@ const app=express();
 app.use(express.json());
 app.use(cookieparser());
 app.use("/user",authRouter);
+app.use("/user",problemRouter);
 
 
 const InitializeConnection=async ()=>{
